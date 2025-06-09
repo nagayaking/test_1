@@ -1,40 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
-    <title>test</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    div{
-      margin-bottom: 20px;
+  <meta charset="UTF-8">
+  <title>PDF.js 全ページ表示</title>
+  <style>
+    #pdf-container canvas {
+      display: flex;
+    }
+
+    #pdf-container {
+      display: flex;
+      overflow-x: scroll;
     }
   </style>
 </head>
+
 <body>
-<div>
-  <form action="test.html" method="post" enctype="multipart/form-data" >
-    <div>
-      <input type="file" name="test" accept="image/png, image/jpeg, application/pdf" onchange="previewFile(this);" multiple/ required>
-    </div>
-    <div>
-      <input type="submit" value="送信する">
-    </div>
-  </form>
-  <p>プレビュー</p>
-  <img id="preview">
- 
+  <input type="file" id="file-input" accept="application/pdf">
+  <div id="pdf-container"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
   <script>
-  function previewFile(hoge){
-    var fileData = new FileReader();
-    fileData.onload = (function() {
-      //id属性が付与されているimgタグのsrc属性に、fileReaderで取得した値の結果を入力することで
-      //プレビュー表示している
-      document.getElementById('preview').src = fileData.result;
+    document.getElementById("file-input").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(file);
+        fileReader.onload = function () {
+          const pdfData = new Uint8Array(fileReader.result);
+          renderPDF(pdfData);
+        };
+      }
     });
-    fileData.readAsDataURL(hoge.files[0]);
-    console.log(hoge.files)
-  }
+
+    function renderPDF(pdfData) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js";
+      const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+
+      loadingTask.promise.then(async (pdf) => {
+        const container = document.getElementById("pdf-container");
+        container.innerHTML = ""; // 既存の内容をクリア
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const scale = (window.innerHeight - 50) / window.innerHeight;
+          const viewport = page.getViewport({ scale });
+
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+          container.appendChild(canvas);
+          page.render(renderContext);
+        }
+      });
+    }
+    const scrollElement = document.querySelector("#pdf-container");
+
+scrollElement.addEventListener("wheel", (e) => {
+  if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+
+  const maxScrollLeft = scrollElement.scrollWidth - scrollElement.clientWidth;
+
+  if (
+    (scrollElement.scrollLeft <= 0 && e.deltaY < 0) ||
+    (scrollElement.scrollLeft >= maxScrollLeft && e.deltaY > 0)
+  )
+    return;
+
+  e.preventDefault();
+  scrollElement.scrollLeft += e.deltaY;
+});
   </script>
-</div>
 </body>
+
 </html>
