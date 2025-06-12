@@ -20,8 +20,7 @@ def pitch_shift(audio, semitones):
     
     # 新しいAudioSegmentの作成
     new_audio = audio._spawn(new_samples.astype(get_array_type(audio.sample_width*8)))
-    print("111111",new_audio)
-    
+
     return new_audio.set_frame_rate(int(audio.frame_rate * factor))
 
 # 使用例
