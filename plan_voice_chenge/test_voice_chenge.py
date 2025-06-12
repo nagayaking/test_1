@@ -19,10 +19,12 @@ def pitch_shift(audio, semitones):
     new_samples = resample(samples, new_length)
     
     # 新しいAudioSegmentの作成
-    new_audio = audio._spawn(new_samples.astype(get_array_type(audio.sample_width)))
+    new_audio = audio._spawn(new_samples.astype(get_array_type(audio.sample_width*8)))
+    print("111111",new_audio)
+    
     return new_audio.set_frame_rate(int(audio.frame_rate * factor))
 
 # 使用例
-audio = AudioSegment.from_wav("maou_se_system49.wav")
+audio = AudioSegment.from_wav("a-2.wav")
 shifted_audio = pitch_shift(audio, 4)  # 4半音上げる
 shifted_audio.export("pitch_shifted.wav", format="wav")
