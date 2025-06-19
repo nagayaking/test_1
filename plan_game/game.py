@@ -1,0 +1,5 @@
+import pyxel
+
+SCREEN_WIDTH = 120
+SCREEN_HEIGHT= 160
+
