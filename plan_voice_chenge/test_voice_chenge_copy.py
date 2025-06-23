@@ -8,3 +8,4 @@ def pitch_shift_librosa(input_path, output_path, semitones):
 
 # 使用例
 pitch_shift_librosa("レコーディング.wav", "pitch_shifted_librosa.wav", semitones=4)
+#stream lit
