@@ -16,7 +16,9 @@ class App:
         pyxel.init(SCREEN_WIDTH,SCREEN_HEIGHT,title="game")
         pyxel.load("me.pyxres")
         self.player_x = 0
+        self.player_dx = 0
         self.player_y = GROUND_HEIGHT - 8
+        self.player_dy = 0
         self.flying_timer = FLYING_TIME
         self.accelerate = GRAVITATIONA_ACCELERATION
         self.right = True
@@ -24,16 +26,26 @@ class App:
         pyxel.run(self.update,self.draw)
 
 
+    def chkwall(self,cx,cy):
+        c = 0
+        if cx < 0 or pyxel.width -8 < cx:
+            c = c + 1
+        if pyxel.height < cy:
+            c = c + 1                  # 画面下に落ちたところで止める
+        for cpx,cpy in check:
+            xi = (cx + cpx)//8
+            yi = (cy + cpy)//8
+            if (1,0) == pyxel.tilemap(0).pget(xi,yi):
+                c = c + 1
+        return c
+            
+
+
     def update(self):
         if pyxel.btnp(pyxel.KEY_ESCAPE):
             pyxel.quit()
 
-        
-        for cpx, cpy in check:
-            xi = (self.player_x + cpx) // 8
-            xy = (self.player_y + cpy) // 8
 
-        tile = pyxel.tilemap(0).pget()
 
         # 落下
         if self.player_y + 8 < GROUND_HEIGHT and not self.is_flying:
@@ -54,9 +66,11 @@ class App:
         # プレイヤーの移動
         if pyxel.btn(pyxel.KEY_A) and self.player_x > 0:
             self.player_x -= 1
+            self.player_dx = -1
             self.right = False
         elif pyxel.btn(pyxel.KEY_D) and self.player_x + 8 < SCREEN_WIDTH:
             self.player_x += 1
+            self.player_dx = 1
             self.right = True
 
     def draw(self):
