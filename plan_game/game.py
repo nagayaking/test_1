@@ -4,9 +4,9 @@ SCREEN_WIDTH = 160
 SCREEN_HEIGHT = 120
 GROUND_HEIGHT = SCREEN_HEIGHT * 4 //5
 LEFT_LINE = 40
-RIGHT_LINE = SCREEN_WIDTH - 48
+
 STAGE_WIDTH = 128 * 3
-STAGE_HEIGHT = 128 * 1
+STAGE_HEIGHT = 128 
 scroll_x = 0
 scroll_y = 0
 
@@ -25,7 +25,7 @@ class App:
         self.player_y = GROUND_HEIGHT - 8
         self.player_dy = 0
         self.jump = 0
-        self.right = True
+        self.pldir = 1
         self.is_flying = False
         pyxel.run(self.update,self.draw)
 
@@ -33,6 +33,7 @@ class App:
 
     def update(self):
         global scroll_x,scroll_y
+        RIGHT_LINE = pyxel.width - 40
 
         # 左方向へのスクロール
         if self.player_x < scroll_x + LEFT_LINE:
@@ -41,15 +42,17 @@ class App:
                 scroll_x = 0
 
         # 右方向へのスクロール
-        if scroll_x + RIGHT_LINE < self.player_x:
+        if scroll_x + RIGHT_LINE < self.player_x + 8:
             scroll_x = self.player_x - RIGHT_LINE
             if SCREEN_WIDTH - pyxel.width < scroll_x:
                 scroll_x = STAGE_WIDTH - pyxel.width
 
-        print(self.player_x, scroll_x, pyxel.width)
 
         def chkwall(self,cx,cy):
             c = 0
+            if cx < 0:
+                c = c + 1
+
             if pyxel.height < cy:
                 c = c + 1               # 画面下に落ちたところで止める
             for cpx,cpy in check:
@@ -58,7 +61,6 @@ class App:
                 if (5,0) == pyxel.tilemap(0).pget(xi,yi):
                     c = c + 1
 
-            print(c)
             return c
 
         if self.jump == 0:
@@ -86,15 +88,25 @@ class App:
             loop = loop -1
 
 
-        # プレイヤーの移動
-        if pyxel.btn(pyxel.KEY_A) and self.player_x > 0:
-            self.player_x -= 1
-            self.player_dx = -1
-            self.right = False
-        elif pyxel.btn(pyxel.KEY_D) and self.player_x + 8 < SCREEN_WIDTH:
-            self.player_x += 1
-            self.player_dx = 1
-            self.right = True
+        # 操作判定
+        if pyxel.btn(pyxel.KEY_A):
+            self.player_dx = -2
+            self.pldir = -1
+        elif pyxel.btn(pyxel.KEY_D):
+            self.player_dx = 2
+            self.pldir = 1
+        else:
+            self.player_dx = 0
+
+        # 横方向の移動
+        lr = pyxel.sgn(self.player_dx)
+        loop = abs(self.player_dx)
+        while 0 < loop :
+            if chkwall(self, self.player_x + lr, self.player_y) != 0:
+                self.player_dx = 0
+                break
+            self.player_x = self.player_x + lr
+            loop = loop -1
     
 
         # 終了
@@ -109,9 +121,6 @@ class App:
         pyxel.camera(scroll_x,scroll_y)
 
         #キャラの向き
-        if self.right:
-            pyxel.blt(self.player_x, self.player_y, 0, 0, 16, 8, 8, pyxel.COLOR_GRAY)
-        else:
-            pyxel.blt(self.player_x, self.player_y, 0, 0, 16, -8, 8, pyxel.COLOR_GRAY)
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 16, self.pldir*8, 8, pyxel.COLOR_GRAY)
 
 App()

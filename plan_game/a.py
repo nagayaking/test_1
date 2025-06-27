@@ -1,3 +1,3 @@
-a = [8,16]
-b = a // 8
+a = {1}
+b= type(a)
 print(b)
