@@ -18,10 +18,11 @@ class Deck:
         return self.cards
 
     def draw_card(self):
-        first_card = self.cards[0]
-        return first_card
+        return self.cards.pop(0)
 
 
 deck = Deck()
 deck.shuffle()
-for card in deck.cards:
+for i in range(5):
+    a = Deck.draw_card(deck)
+    print(f"{a.suit}{a.number}")

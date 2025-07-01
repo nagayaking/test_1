@@ -1,0 +1,4 @@
+import qrcode
+img = qrcode.make("https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqazVBejF2UkhSb1kySGR0S0JNUmNrYW1NRmlYd3xBQ3Jtc0tsTGlLN1I1c0Mxb0Q5TWJnS05LSFFqTGhDZ3pIc3Y5bWJIYUxNRTZkMm1YM3kxaHNXNDdiYVRNYzdnVl9OY2JzeUdKTEh0WW5XUHZkbTMtOWMxakk4cldqYjk1NFNiLXpZemJPa1l5ZGpvUG1LbHgwMA&q=https%3A%2F%2Fwww.amazon.co.jp%2Fdp%2F4297142856&v=v5lpFzSwKbc")
+
+img.save("QRcode.png")
