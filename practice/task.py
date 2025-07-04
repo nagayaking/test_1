@@ -3,6 +3,8 @@ from tkinter import ttk
 import datetime 
 import calendar
 
+from b import list_sort
+
 selected_value_year = 1
 selected_value_month = 1
 selected_value_date = 1
@@ -15,15 +17,6 @@ def month_range(year,month):
 with open("task.txt", "r") as f:
     taskss = f.read()
 
-#並び替え
-def list_sort(lis_join, lis_base, file):
-    dic = {}
-    lis_key = ["task", "year", "month", "date"]
-    words_base = []
-    with open(file, "r") as f:
-        words_base = f.readlines()
-    words_join = lis_join.split("|")
-    
 
 #現在の年月日を取得
 dt = datetime.datetime.now
