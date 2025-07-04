@@ -33,3 +33,5 @@ def list_sort(lis_join, file):
         new_words = new_words + ("\n" if new_words != "" else "") + new_word
     with open(file, "w") as f:
         f.write(new_words)
+
+    return new_words

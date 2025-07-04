@@ -104,18 +104,12 @@ def button_clicked():
     value = get_value()
     with open("task.txt", "r") as f:
         tasks = f.readlines()
-    if tasks == []:
-        with open("task.txt", "w") as f:
-            f.write(f"{value}|{selected_value_year}|{selected_value_month}|{selected_value_date}")
-        taskss = taskss + f"{value}|{selected_value_year}|{selected_value_month}|{selected_value_date}"
-        list_tasks =tk.Label(text=taskss,background="#f0f8ff")
-        list_tasks.grid(row=7, column=0, columnspan=5, sticky=tk.W, padx=10)
-    else:
-        with open("task.txt", "a") as f:
-            f.write(f"\n{value}|{selected_value_year}|{selected_value_month}|{selected_value_date}")
-        taskss = taskss + f"\n{value}|{selected_value_year}|{selected_value_month}|{selected_value_date}"
-        list_tasks =tk.Label(text=taskss,background="#f0f8ff")
-        list_tasks.grid(row=7, column=0, columnspan=5, sticky=tk.W, padx=10)
+    join_task = f"{value}|{selected_value_year}|{selected_value_month}|{selected_value_date}"
+    new_tasks = list_sort(join_task, "task.txt")
+    list_tasks =tk.Label(text=new_tasks,background="#f0f8ff")
+    list_tasks.grid(row=7, column=0, columnspan=5, sticky=tk.W, padx=10)
+    
+ 
 
 button = tk.Button(root, text="送信", command=button_clicked)
 button.grid(row=4, column=0, pady=10)
