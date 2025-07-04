@@ -1,4 +1,30 @@
-import qrcode
-img = qrcode.make("https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqazVBejF2UkhSb1kySGR0S0JNUmNrYW1NRmlYd3xBQ3Jtc0tsTGlLN1I1c0Mxb0Q5TWJnS05LSFFqTGhDZ3pIc3Y5bWJIYUxNRTZkMm1YM3kxaHNXNDdiYVRNYzdnVl9OY2JzeUdKTEh0WW5XUHZkbTMtOWMxakk4cldqYjk1NFNiLXpZemJPa1l5ZGpvUG1LbHgwMA&q=https%3A%2F%2Fwww.amazon.co.jp%2Fdp%2F4297142856&v=v5lpFzSwKbc")
+import datetime
 
-img.save("QRcode.png")
+
+def list_sort(lis_join, file):
+    dic = {}
+    lis_key = ["task", "year", "month", "date"]
+    words_base = []
+    words = []
+    num = 0
+
+    with open(file, "r") as f:
+        words_base = f.readlines()
+    words_base.append(lis_join)
+    for i in words_base:
+        if i.endswith("\n"):
+            i_1 = i.strip()
+        a = i_1.split("|")
+        for j in range(4):
+            key = lis_key[j] + str(num)
+            dic[key] = a[j]
+        j = 0
+        words.append([a])
+        num += 1
+    
+    print(dic)
+
+dt = datetime.datetime(2001,3,26) - datetime.datetime(1899, 12, 31)
+print(dt.days) # シリアル値
+
+list_sort("finnfj|y|m|d", "task.txt")
