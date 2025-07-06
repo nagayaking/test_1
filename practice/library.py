@@ -14,9 +14,9 @@ def list_sort(lis_join, file):
     with open(file, "r") as f:
         words_base = f.readlines()
     if lis_join != "" or lis_join != []:
-        if type(lis_join) == "str":
+        if type(lis_join) == str:
            words_base.append(lis_join)
-        elif type(lis_join) == "list":
+        elif type(lis_join) == list:
             for i in range(len(lis_join)):
                 words_base.append(lis_join)
 
@@ -85,5 +85,3 @@ def make_log(current_file, log_file):
                 f.writelines(live_tasks)
 
     list_sort(dead_tasks, log_file)
-
-list_sort("fjjfdjf|2027|4|5", "task.txt")

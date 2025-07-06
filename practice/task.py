@@ -128,14 +128,14 @@ def button_clicked():
     with open("task.txt", "r") as f:
         tasks = f.readlines()
     join_task = f"{selected_value_task}|{selected_value_year}|{selected_value_month}|{selected_value_date}"
-    new_tasks = library.list_sort("hhh|2027|5|29", "task.txt")
+    new_tasks = library.list_sort(join_task, "task.txt")
     list_tasks = tk.StringVar(value=tuple(new_tasks))
     Listbox1 = tk.Listbox(root, listvariable=list_tasks, height=5)
     scrollbar1 = tk.Scrollbar(root, orient=tk.VERTICAL, command=Listbox1.yview)
     Listbox1["yscrollcommand"] = scrollbar1.set
     Listbox1.grid(row=7, column=0)
     scrollbar1.grid(row=7, column=1, sticky=(tk.N, tk.S))
-    print(11111111111)
+
 
 
 button = tk.Button(root, text="送信", command=button_clicked)
