@@ -23,6 +23,7 @@ var morse_list = {
 "、":"010101"//読点
 }
 
+
 function count(){
     words.push(2)
 }
