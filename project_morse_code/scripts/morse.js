@@ -6,7 +6,7 @@ var word = "";
 let words=[];
 
 
-var morse_list = {
+const morse_list = {
 "ーー・ーー":"あ","・ー":"い","・・ー":"う","ー・ーーー":"え","・ー・・・":"お",
 "・ー・・":"か","ー・ー・・":"き","・・・ー":"く","ー・ーー":"け","ーーーー":"こ",
 "ー・ー・ー":"さ","ーー・ー・":"し","ーーー・ー":"す","・ーーー・":"せ","ーーー・":"そ",
@@ -26,7 +26,7 @@ var morse_list = {
 
 
 //モールスを日本語に変換
-function cnv(){
+const cnv = () => {
     morse = words.join("");
     if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
         word += morse_list[morse];
@@ -57,3 +57,18 @@ function mouseup() {
     id = setTimeout(cnv, interval);
     morse_ja.innerHTML = `${str}`;
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.getElementById("colored-text");
+            const text = textElement.textContent;
+            const colors = ["color-red", "color-green", "color-blue", "color-yellow", "color-purple"];
+            let newText = "";
+
+            for (let i = 0; i < text.length; i++) {
+                const colorClass = colors[i % colors.length];
+                newText += `<span class="${colorClass}">${text[i]}</span>`;
+            }
+
+            textElement.innerHTML = newText;
+        });
