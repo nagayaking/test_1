@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <title>sample</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width" />
+    <title>文字ごとに異なる色</title>
+    <style>
+        .color-red { color: red; }
+        .color-green { color: green; }
+        .color-blue { color: blue; }
+        .color-yellow { color: yellow; }
+        .color-purple { color: purple; }
+    </style>
 </head>
-
 <body>
+    <p id="colored-text">こんにちは</p>
+
     <script>
-    for (let i = 0; i < 3; i++) {
-    var id = setTimeout(function () {
-        console.log(i)
-    }, 1000);
-    if(i == 1){
-        clearTimeout(id)
-    }
-    }
+        document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.getElementById("colored-text");
+            const text = textElement.textContent;
+            const colors = ["color-red", "color-green", "color-blue", "color-yellow", "color-purple"];
+            let newText = "";
+
+            for (let i = 0; i < text.length; i++) {
+                const colorClass = colors[i % colors.length];
+                newText += `<span class="${colorClass}">${text[i]}</span>`;
+            }
+
+            textElement.innerHTML = newText;
+        });
     </script>
 </body>
 </html>

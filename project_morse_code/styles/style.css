@@ -12,7 +12,7 @@ button{
 	height: 50px;
 }
 
-#rst {
+#textJapanese {
     outline: 0;
 			font-size: 40px;
 			line-height: 26px;
@@ -21,3 +21,8 @@ button{
 			padding: 8px 12px;
 			border: 0;
 }
+.color-red { color: red; }
+.color-green { color: green; }
+.color-blue { color: blue; }
+.color-yellow { color: yellow; }
+.color-purple { color: purple; }

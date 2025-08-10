@@ -3,8 +3,7 @@ let blanktime=0;
 var interval = 300
 var id;
 var word = "";
-let words=[];
-
+var words=[];
 
 const morse_list = {
 "ーー・ーー":"あ","・ー":"い","・・ー":"う","ー・ーーー":"え","・ー・・・":"お",
@@ -24,19 +23,38 @@ const morse_list = {
 "・ー・ー・ー":"、"//読点
 }
 
+class Morse{
+    constructor(te,mo){
+        this.te = te;
+        this.mo = mo;
+    }
+
+    cnv(){
+        let morse = words.join("");
+        if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
+            word += morse_list[morse];
+            textJapanese.innerHTML = `${word}`;
+        }else{
+            textJapanese.innerHTML = `入力が違います`;
+        }
+        words = [];
+        console.log(word);
+    }
+}
+
 
 //モールスを日本語に変換
-const cnv = () => {
+/*const cnv = () => {
     morse = words.join("");
     if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
         word += morse_list[morse];
-        rst.innerHTML = `${word}`;
+        textJapanese.innerHTML = `${word}`;
     }else{
-        rst.innerHTML = `入力が違います`;
+        textJapanese.innerHTML = `入力が違います`;
     }
     words = [];
     console.log(word);
-}
+}*/
 
 
 //入力をモールス信号に変換
@@ -54,14 +72,16 @@ function mouseup() {
         words.push("ー"); //バー
     }
     str = words.join("")
-    id = setTimeout(cnv, interval);
-    morse_ja.innerHTML = `${str}`;
+    id = setTimeout(Morse.cnv, interval);
+    morseJapanese.innerHTML = `${str}`;
 }
 
 
 document.addEventListener("DOMContentLoaded", function() {
-            const textElement = document.getElementById("colored-text");
+            const textElement = document.getElementById("textJapanese");
+            console.log(textElement);
             const text = textElement.textContent;
+            console.log(text);
             const colors = ["color-red", "color-green", "color-blue", "color-yellow", "color-purple"];
             let newText = "";
 
