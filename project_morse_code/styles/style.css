@@ -1,7 +1,7 @@
 html {
     text-align: center;
-			background: #c9d5dd;
-			color: #412300;
+			background: #323437;
+			color: #e2b714;
 			transition: 1s ease;
 			font-family: sans-serif;
 			word-break: break-all;
@@ -20,9 +20,11 @@ button{
 
 			padding: 8px 12px;
 			border: 0;
+			color: #646669;
 }
-.color-red { color: red; }
-.color-green { color: green; }
-.color-blue { color: blue; }
-.color-yellow { color: yellow; }
-.color-purple { color: purple; }
+
+#morseJapanese{
+	color : #646669;
+}
+.color-white { color: white; }
+.color-gray { color: #646669; }

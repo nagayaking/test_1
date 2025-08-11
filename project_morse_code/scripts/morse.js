@@ -24,28 +24,20 @@ const morse_list = {
 }
 
 class Morse{
-    constructor(te,mo){
-        this.te = te;
-        this.mo = mo;
+    constructor(baseText,baseMorse){
+        this.baseText = baseText;
+        this.baseMorse = baseMorse;
     }
+}
 
-    cnv(){
-        let morse = words.join("");
-        if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
-            word += morse_list[morse];
-            textJapanese.innerHTML = `${word}`;
-        }else{
-            textJapanese.innerHTML = `入力が違います`;
-        }
-        words = [];
-        console.log(word);
-    }
+const judgeText = (word) => {
+
 }
 
 
 //モールスを日本語に変換
-/*const cnv = () => {
-    morse = words.join("");
+const cnv = () => {
+    let morse = words.join("");
     if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
         word += morse_list[morse];
         textJapanese.innerHTML = `${word}`;
@@ -54,8 +46,29 @@ class Morse{
     }
     words = [];
     console.log(word);
-}*/
+}
 
+
+const wordsBase = ["","ー・ーー・・ーー・・ー・・・・ーー・・ー・ー・ーーーー・・・ーーーー・・・・・・・ーーー・ー・ー・"];
+
+const deleteFirst = (text) => {
+  return text.replace(/^./, "");
+}
+
+const judgeWords = (word) => {
+  let correctWords = "";
+  if(wordsBase.startsWith(word[1])){
+    correctWords = word[0] + word[1].slice(0,1);
+    newWords = deleteFirst(wordsBase);
+  }
+  return [correctWords,wordsBase];
+}
+const colorChange = (text) => {
+            const colors = ["color-white", "color-gray"];
+            let newText = "";
+            newText = `<span class="${colors[0]}">${text[0]}</span>${text[1]}`;
+            textElement.innerHTML = newText;
+        };
 
 //入力をモールス信号に変換
 function mousedown() {
@@ -72,7 +85,7 @@ function mouseup() {
         words.push("ー"); //バー
     }
     str = words.join("")
-    id = setTimeout(Morse.cnv, interval);
+    id = setTimeout(cnv, interval);
     morseJapanese.innerHTML = `${str}`;
 }
 

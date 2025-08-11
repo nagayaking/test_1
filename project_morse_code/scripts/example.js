@@ -19,7 +19,6 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-
 const examples = [
   {text1 : "今日はりんごを食べました", text2 : "きようはりんこ゛をたへ゛ました", morse : 
 "ー・ーー・・ーー・・ー・・・・ーー・・ー・ー・ーーーー・・・ーーーー・・・・・・・ーーー・ー・ー・"},
@@ -27,6 +26,7 @@ const examples = [
 "・・ー・・・・・ー・ー・・・・・ー・・ーーーーー・・・・・ーー・ー・"}
 ];
 
+var Qtext = examples[getRandomInt(examples.length)];
 
 //変換用
 const mapString = (str) => 
