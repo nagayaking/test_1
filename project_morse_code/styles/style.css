@@ -23,8 +23,15 @@ button{
 			color: #646669;
 }
 
+#textHurigana{
+	outline: 0;
+			font-size: 18px;
+			color: #646669;
+}
+
 #morseJapanese{
 	color : #646669;
 }
 .color-white { color: white; }
 .color-gray { color: #646669; }
+

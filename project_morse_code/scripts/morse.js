@@ -30,44 +30,42 @@ class Morse{
     }
 }
 
-const judgeText = (word) => {
-
-}
-
 
 //モールスを日本語に変換
 const cnv = () => {
-    let morse = words.join("");
+    let morse = words;
     if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
         word += morse_list[morse];
         textJapanese.innerHTML = `${word}`;
     }else{
         textJapanese.innerHTML = `入力が違います`;
     }
-    words = [];
-    console.log(word);
+    words = "";
 }
 
 
-const wordsBase = ["","ー・ーー・・ーー・・ー・・・・ーー・・ー・ー・ーーーー・・・ーーーー・・・・・・・ーーー・ー・ー・"];
+var wordsBase = ["","ー・ー・・ーー・・ー・・・・ーー・・ー・ー・ーーーー・・・ーーーー・・・・・・・ーーー・ー・ー・"];
 
 const deleteFirst = (text) => {
   return text.replace(/^./, "");
 }
 
-const judgeWords = (word) => {
+const judgeWords = (word, list) => {
   let correctWords = "";
-  if(wordsBase.startsWith(word[1])){
-    correctWords = word[0] + word[1].slice(0,1);
-    newWords = deleteFirst(wordsBase);
+  let newWords;
+  if(list[1].startsWith(word)){
+    correctWords = list[0] + word;
+    newWords = deleteFirst(list[1]);
+    return [correctWords,newWords];
+  }else{
+    return list;//間違えた時の処理１
   }
-  return [correctWords,wordsBase];
 }
 const colorChange = (text) => {
             const colors = ["color-white", "color-gray"];
             let newText = "";
             newText = `<span class="${colors[0]}">${text[0]}</span>${text[1]}`;
-            textElement.innerHTML = newText;
+            document.getElementById("morseJapanese").innerHTML = newText;
         };
 
 //入力をモールス信号に変換
@@ -77,24 +75,26 @@ function mousedown() {
     clearTimeout(id);
 }
 function mouseup() {
+    let mo;
     let end1 = performance.now();
     let result = end1 - ddtime;
     if(result<=200){
-        words.push("・"); //ドット
+        mo = "・"; //ドット
     }else{
-        words.push("ー"); //バー
+        mo = "ー"; //バー
     }
-    str = words.join("")
+    wordsBase = judgeWords(mo, wordsBase);
+    colorChange(wordsBase);
+    mo = "";
+    words = wordsBase[0];
+    console.log(words);
     id = setTimeout(cnv, interval);
-    morseJapanese.innerHTML = `${str}`;
 }
 
 
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
             const textElement = document.getElementById("textJapanese");
-            console.log(textElement);
             const text = textElement.textContent;
-            console.log(text);
             const colors = ["color-red", "color-green", "color-blue", "color-yellow", "color-purple"];
             let newText = "";
 
@@ -104,4 +104,4 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             textElement.innerHTML = newText;
-        });
+        });*/
