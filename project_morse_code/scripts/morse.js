@@ -23,34 +23,38 @@ const morse_list = {
 "・ー・ー・ー":"、"//読点
 }
 
-class Morse{
-    constructor(baseText,baseMorse){
-        this.baseText = baseText;
-        this.baseMorse = baseMorse;
-    }
-}
+const morsecodeMap = {
+"あ":"ーー・ーー","い":"・ー","う":"・・ー","え":"ー・ーーー","お":"・ー・・・",
+"か":"・ー・・","き":"ー・ー・・","く":"・・・ー","け":"ー・ーー","こ":"ーーーー",
+"さ":"ー・ー・ー","し":"ーー・ー・","す":"ーーー・ー","せ":"・ーーー・","そ":"ーーー・",
+"た":"ー・","ち":"・・ー・","つ":"・ーー・","て":"・ー・ーー","と":"・・ー・・",
+"な":"・ー・","に":"ー・ー・","ぬ":"・・・・","ね":"ーー・ー","の":"・・ーー",
+"は":"ー・・・","ひ":"ーー・・ー","ふ":"ーー・・","へ":"・","ほ":"ー・・",
+"ま":"ー・・ー","み":"・・ー・ー","む":"ー","め":"ー・・・ー","も":"ー・・ー・",
+"や":"・ーー","ゆ":"ー・・ーー","よ":"ーー",
+"ら":"・・・","り":"ーー・","る":"ー・ーー・","れ":"ーーー","ろ":"・ー・ー",
+"わ":"ー・ー","ゐ":"・ー・・ー","ゑ":"・ーー・・","を":"・ーーー","ん":"・ー・ー・",
+
+"゛":"・・",//濁点
+"゜":"・・ーー・",//半濁点
+"ー":"・ーー・ー",//長音
+"、":"・ー・ー・ー"//読点
+};
 
 
-//モールスを日本語に変換
-const cnv = () => {
-    let morse = words;
-    if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
-        word += morse_list[morse];
-        textJapanese.innerHTML = `${word}`;
-    }else{
-        textJapanese.innerHTML = `入力が違います`;
-    }
-    words = "";
-}
-
-
-var wordsBase = ["","ー・ー・・ーー・・ー・・・・ーー・・ー・ー・ーーーー・・・ーーーー・・・・・・・ーーー・ー・ー・"];
+var morseBase = ["","ー・ー・・ーー・・ーー・・・ーー・・ー・ー・ーーーー・・・ーーーー・・・・ー・・ーーー・ー・ー・"];
+var wordsBase = ["", "きようはりんこ゛をたへ゛ました"];
 
 const deleteFirst = (text) => {
   return text.replace(/^./, "");
 }
 
-const judgeWords = (word, list) => {
+const mapString = (str) => 
+  str.split("").map((a) => {
+    return morsecodeMap[a]
+  }).join("");
+
+const judgeMorse = (word, list) => {
   let correctWords = "";
   let newWords;
   if(list[1].startsWith(word)){
@@ -61,12 +65,32 @@ const judgeWords = (word, list) => {
     return list;//間違えた時の処理１
   }
 }
-const colorChange = (text) => {
+
+const colorChange = (text, file) => {
             const colors = ["color-white", "color-gray"];
             let newText = "";
             newText = `<span class="${colors[0]}">${text[0]}</span>${text[1]}`;
-            document.getElementById("morseJapanese").innerHTML = newText;
+            document.getElementById(file).innerHTML = newText;
         };
+
+//モールスを日本語に変換
+const cnv = () => {
+    let morse = words;
+    if(morse_list[morse]!==NaN && morse_list[morse]!==undefined){
+        word += morse_list[morse];
+        wordsBase = judgeMorse(word,wordsBase);
+        console.log(wordsBase);
+        console.log(morseBase[0]);
+        morseBase = [mapString(wordsBase[0]), mapString(wordsBase[1])];
+        console.log(morseBase);
+        colorChange(wordsBase, "textHurigana");
+        colorChange(morseBase, "morseJapanese");
+    }/*else{
+        textJapanese.innerHTML = `入力が違います`;
+    }*/
+   word = "";
+    words = "";
+}
 
 //入力をモールス信号に変換
 function mousedown() {
@@ -83,25 +107,10 @@ function mouseup() {
     }else{
         mo = "ー"; //バー
     }
-    wordsBase = judgeWords(mo, wordsBase);
-    colorChange(wordsBase);
+    morseBase = judgeMorse(mo, morseBase);
+    colorChange(morseBase, "morseJapanese");
+    words += mo;
     mo = "";
-    words = wordsBase[0];
     console.log(words);
     id = setTimeout(cnv, interval);
 }
-
-
-/*document.addEventListener("DOMContentLoaded", function() {
-            const textElement = document.getElementById("textJapanese");
-            const text = textElement.textContent;
-            const colors = ["color-red", "color-green", "color-blue", "color-yellow", "color-purple"];
-            let newText = "";
-
-            for (let i = 0; i < text.length; i++) {
-                const colorClass = colors[i % colors.length];
-                newText += `<span class="${colorClass}">${text[i]}</span>`;
-            }
-
-            textElement.innerHTML = newText;
-        });*/
