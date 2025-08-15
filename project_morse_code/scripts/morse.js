@@ -6,6 +6,13 @@ var word = "";
 var words=[];
 var num = 0;
 
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+let oscillator = null;
+let gainNode = null;
+
+const button = document.getElementById('soundButton');
+
 const morse_list = {
   "ーー・ーー":"あ","・ー":"い","・・ー":"う","ー・ーーー":"え","・ー・・・":"お",
   "・ー・・":"か","ー・ー・・":"き","・・・ー":"く","ー・ーー":"け","ーーーー":"こ",
@@ -180,9 +187,28 @@ const cnv = () => {
 
 //入力をモールス信号に変換
 function mousedown() {
-    let start1 = performance.now();
-    ddtime = start1;
-    clearTimeout(id);
+  let start1 = performance.now();
+  ddtime = start1;
+
+    // オシレーターとゲインノードを作成
+  oscillator = audioCtx.createOscillator();
+  gainNode = audioCtx.createGain();
+
+  // ラの音（A4: 440Hz）
+  oscillator.frequency.value = 880;
+  oscillator.type = 'sine';
+
+  // ノードを接続
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  // 音量を設定
+  gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+  // 再生開始
+  oscillator.start();
+
+  clearTimeout(id);
 }
 
 function mouseup() {
@@ -196,9 +222,17 @@ function mouseup() {
   }
   morseBase = judgeMorse(mo, morseBase);
   colorChange(morseBase, "morseJapanese");
+
+ if (oscillator) {
+    oscillator.stop();
+    oscillator = null;
+    gainNode = null;
+  }
+
   words += mo;
   mo = "";
   id = setTimeout(cnv, interval);
 }
+
 
 document.addEventListener("DOMContentLoaded", reset());
